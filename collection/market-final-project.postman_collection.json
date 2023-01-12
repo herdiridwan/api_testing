@@ -1,0 +1,1164 @@
+{
+	"info": {
+		"_postman_id": "e944bf04-5806-491a-80f1-cbf55b7cf24e",
+		"name": "market-final-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24654510"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth-register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var email_registration = response.email\r",
+									"\r",
+									"    pm.globals.set(\"email\", email_registration);\r",
+									"    \r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"    pm.test(\"Status code is 201 : Success to register\", function(){\r",
+									"        pm.expect(response_code).to.be.oneOf([201, 202]);});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "{{$randomNamePrefix}} Nurul {{$randomNameSuffix}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ab001002",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "08785785486",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "asdwedf32f",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "city",
+									"value": "Garut",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{binar}}/auth/register",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth-login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"email\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"let jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201]);});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"ab001002\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{binar}}/auth/login",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "seller-product",
+			"item": [
+				{
+					"name": "seller-product-post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"acess_token\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var  id = response.id;\r",
+									"    pm.globals.set(\"product_id\", id);\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201]);});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "basreng",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "data/AJA.png"
+								},
+								{
+									"key": "category_ids",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "base_price",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "asdasdasd",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "asdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{binar}}/seller/product",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"seller",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seller-product-get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"access_token\");\r",
+									"\r",
+									"pm.globals.get(\"product_id\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/seller/product",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"seller",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seller-product-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"access_token\");\r",
+									"\r",
+									"pm.globals.get(\"product_id\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/seller/product/{{product_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"seller",
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seller-product-id-delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function()\r",
+									"{pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"access_token\");\r",
+									"\r",
+									"pm.globals.get(\"product_id\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/seller/product/{{product_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"seller",
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seller-product-post2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"acess_token\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var  id = response.id;\r",
+									"    pm.globals.set(\"product_id\",id);\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201]);});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "basreng",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "data/AJA.png"
+								},
+								{
+									"key": "category_ids",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "base_price",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "asdasdasd",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "asdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{binar}}/seller/product",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"seller",
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "buyer-product",
+			"item": [
+				{
+					"name": "auth-register-buyer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var email_registration = response.email\r",
+									"\r",
+									"    pm.globals.set(\"email\", email_registration);\r",
+									"    \r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"    pm.test(\"Status code is 201 : Success to register\", function(){\r",
+									"        pm.expect(response_code).to.be.oneOf([201, 202]);});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "{{$randomNamePrefix}} Nurul {{$randomNameSuffix}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ab001002",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "08785785486",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "asdwedf32f",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "city",
+									"value": "Garut",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{binar}}/auth/register",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth-login-buyer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"email\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"let jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201]);});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"ab001002\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{binar}}/auth/login",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"product_id\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/product?available=available&category_id=1&search&page=1&per_page=1",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"product"
+							],
+							"query": [
+								{
+									"key": "available",
+									"value": "available"
+								},
+								{
+									"key": "category_id",
+									"value": "1"
+								},
+								{
+									"key": "search",
+									"value": null
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-product-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"product_id\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/product/{{product_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "buyer-order",
+			"item": [
+				{
+					"name": "buyer-order-post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"var  id = response.id;\r",
+									"    pm.globals.set(\"order_id\", id);\r",
+									"\r",
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201,200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"access_token\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "{{product_id}}",
+									"type": "text"
+								},
+								{
+									"key": "bid_price",
+									"value": "500",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/order",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-order-get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"order_id\");\r",
+									"pm.globals.get(\"access_token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{binar}}/buyer/order",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-order-get-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"order_id\");\r",
+									"\r",
+									"pm.globals.get(\"access_token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "id",
+								"value": "{{order_id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/order/{{order_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-order-put-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201,200]);});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.globals.get(\"buy_id\");\r",
+									"\r",
+									"pm.globals.get(\"access_token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "id",
+								"value": "{{order_id}}",
+								"type": "text"
+							},
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/order/{{order_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buyer-order-delete-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response_code = pm.response.code;\r",
+									"\r",
+									"pm.test(\"Status code is 201 : Success to register\", function(){pm.expect(response_code).to.be.oneOf([201,200]);});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "id",
+								"value": "{{order_id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{binar}}/buyer/order/{{order_id}}",
+							"host": [
+								"{{binar}}"
+							],
+							"path": [
+								"buyer",
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}
